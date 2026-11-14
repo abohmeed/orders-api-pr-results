@@ -23,4 +23,9 @@ jobs:
         run: conftest verify
 
       - name: Policy check
-        run: conftest test fixtures/plan-bad.json
+        run: |
+          set +e
+          conftest test --output github fixtures/plan-bad.json
+          status=$?
+          conftest test --output table fixtures/plan-bad.json >> "$GITHUB_STEP_SUMMARY"
+          exit $status
