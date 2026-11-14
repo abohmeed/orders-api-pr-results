@@ -1,0 +1,52 @@
+{
+  "format_version": "1.2",
+  "resource_changes": [
+    {
+      "address": "aws_s3_bucket.artifacts",
+      "type": "aws_s3_bucket",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "after": {
+          "bucket": "orders-artifacts",
+          "tags_all": {
+            "Owner": "platform"
+          }
+        }
+      }
+    },
+    {
+      "address": "aws_s3_bucket_public_access_block.artifacts",
+      "type": "aws_s3_bucket_public_access_block",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "after": {
+          "block_public_acls": false,
+          "block_public_policy": true,
+          "ignore_public_acls": false,
+          "restrict_public_buckets": true
+        }
+      }
+    },
+    {
+      "address": "aws_iam_role_policy.app",
+      "type": "aws_iam_role_policy",
+      "change": {
+        "actions": [
+          "create"
+        ],
+        "after": {
+          "policy": "{\"Statement\": [{\"Effect\": \"Allow\", \"Action\": \"s3:*\", \"Resource\": \"*\"}]}",
+          "tags_all": {
+            "Owner": "platform",
+            "CostCenter": "cc-1042",
+            "Environment": "dev"
+          }
+        }
+      }
+    }
+  ]
+}
