@@ -1,0 +1,26 @@
+name: policy
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Install Conftest
+        run: |
+          CONFTEST_VERSION=0.71.1
+          curl -sSL "https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VERSION}/conftest_${CONFTEST_VERSION}_Linux_x86_64.tar.gz" | tar xz conftest
+          sudo mv conftest /usr/local/bin/
+
+      - name: Policy tests
+        run: conftest verify
+
+      - name: Policy check
+        run: conftest test fixtures/plan-bad.json
